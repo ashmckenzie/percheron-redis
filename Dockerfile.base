@@ -1,0 +1,12 @@
+FROM base/archlinux:latest
+MAINTAINER ash@the-rebellion.net
+
+ENV TERM ansi
+
+RUN pacman-key --refresh-keys
+RUN pacman -yS --noconfirm redis supervisor
+RUN pacman -Sc --noconfirm
+
+ADD ./config/supervisord.conf /etc/supervisord.conf
+
+RUN mkdir -p /etc/supervisord.d

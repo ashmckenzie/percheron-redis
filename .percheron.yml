@@ -1,0 +1,38 @@
+---
+docker:
+  host: "https://boot2docker:2376"
+  ssl_verify_peer: false
+
+stacks:
+  - name: redis
+    containers:
+
+      - name: base
+        version: 1.0.0
+        dockerfile: ./Dockerfile.base
+        startable: false
+
+      - name: master
+        version: 1.0.0
+        dockerfile: ./Dockerfile.redis
+        dependant_container_names:
+          - base
+
+      - name: slave
+        instances: 2
+        version: 1.0.0
+        dockerfile: ./Dockerfile.redis
+        post_start_scripts:
+          - ./scripts/redis_set_slaveof.sh
+        dependant_container_names:
+          - base
+          - master
+
+      - name: tools
+        version: 1.0.0
+        dockerfile: ./Dockerfile.tools
+        dependant_container_names:
+          - base
+          - master
+          - slave1
+          - slave2

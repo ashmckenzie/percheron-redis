@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'redis'
+
+$stdout.sync = true
+
+SENTINELS = [
+  { host: 'slave1', port: '26379' },
+  { host: 'slave2', port: '26379' }
+]
+
+redis = Redis.new(url: 'redis://master', sentinels: SENTINELS, role: :master)
+
+redis.set('foo', 'bar')
+
+loop do
+  begin
+    puts "#{Time.now}: #{redis.client.host}:#{redis.client.port} - #{redis.get 'foo'}"
+  rescue => e
+    puts 'failed?', e
+  end
+  sleep 1
+end

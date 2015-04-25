@@ -1,0 +1,14 @@
+FROM redis_base:1.0.0
+MAINTAINER ash@the-rebellion.net
+
+RUN pacman -Sy --noconfirm ruby
+RUN gem install redis
+
+RUN mkdir -p /opt/bin
+
+ADD scripts/redis_test /opt/bin/redis_test
+ADD config/redis-test.ini /etc/supervisord.d/redis-test.ini
+
+RUN chmod 755 /opt/bin/redis_test
+
+CMD [ "/usr/sbin/supervisord", "-n", "-c", "/etc/supervisord.conf" ]

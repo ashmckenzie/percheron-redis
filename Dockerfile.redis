@@ -1,0 +1,12 @@
+FROM redis_base:1.0.0
+MAINTAINER ash@the-rebellion.net
+
+ADD config/redis.conf /etc/redis.conf
+ADD config/redis-sentinel.conf /etc/sentinel.conf
+
+ADD config/redis.ini /etc/supervisord.d/redis.ini
+ADD config/redis-sentinel.ini /etc/supervisord.d/redis-sentinel.ini
+
+EXPOSE 6379 26379
+
+CMD [ "/usr/sbin/supervisord", "-n", "-c", "/etc/supervisord.conf" ]
