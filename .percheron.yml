@@ -5,7 +5,7 @@ docker:
 
 stacks:
   - name: redis
-    containers:
+    units:
 
       - name: base
         version: 1.0.0
@@ -15,6 +15,9 @@ stacks:
       - name: master
         version: 1.0.0
         dockerfile: ./Dockerfile.redis
+        ports:
+          - 6369:6379
+          - 26379:26379
         dependant_container_names:
           - base
 
