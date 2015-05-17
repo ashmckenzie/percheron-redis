@@ -18,7 +18,7 @@ stacks:
         ports:
           - 6369:6379
           - 26379:26379
-        dependant_container_names:
+        dependant_unit_names:
           - base
 
       - name: slave
@@ -27,14 +27,14 @@ stacks:
         dockerfile: ./Dockerfile.redis
         post_start_scripts:
           - ./scripts/redis_set_slaveof.sh
-        dependant_container_names:
+        dependant_unit_names:
           - base
           - master
 
       - name: tools
         version: 1.0.0
         dockerfile: ./Dockerfile.tools
-        dependant_container_names:
+        dependant_unit_names:
           - base
           - master
           - slave1
