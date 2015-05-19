@@ -6,7 +6,6 @@ docker:
 stacks:
   - name: redis
     units:
-
       - name: base
         version: 1.0.0
         dockerfile: ./Dockerfile.base
